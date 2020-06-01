@@ -1,39 +1,79 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: >
-  cloud-resume-backend
+  
+  SAM Template for cloud-resume-backend
 
-  Sample SAM Template for cloud-resume-backend
-
-# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
-  Function:
-    Timeout: 3
+  Api:
+    OpenApiVersion: 3.0.1
 
 Resources:
-  HelloWorldFunction:
-    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+
+  MyResumeApi:
+    Type: AWS::Serverless::Api
     Properties:
-      CodeUri: hello_world/
-      Handler: app.lambda_handler
+      Name: MyResumeApi
+      StageName: prod
+      Cors: "'*'"
+      DefinitionBody:
+        'Fn::Transform':
+          Name: 'AWS::Include'
+          Parameters:
+            Location: ./swagger.yaml
+
+  ResumeFunction:
+    Type: AWS::Serverless::Function 
+    Properties:
+      CodeUri: resume_python/lambda_function.py
+      Handler: lambda_function.lambda_handler
       Runtime: python3.7
-      Events:
-        HelloWorld:
-          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
-          Properties:
-            Path: /hello
-            Method: get
+      Policies:
+        - AWSLambdaBasicExecutionRole
+        - Version: '2012-10-17'
+          Statement:
+          - Effect: Allow
+            Action:
+              - lambda:InvokeFunction
+              - dynamodb:BatchGetItem
+              - dynamodb:GetItem
+              - dynamodb:Query
+              - dynamodb:Scan
+              - dynamodb:BatchWriteItem
+              - dynamodb:PutItem
+              - dynamodb:UpdateItem
+              - logs:CreateLogStream
+              - logs:PutLogEvents
+              - logs:CreateLogGroup
+            Resource: '*'
+
+  ResumeDBTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+        - 
+          AttributeName: 'siteUrl'
+          AttributeType: 'S'
+      KeySchema:
+        - 
+          AttributeName: 'siteUrl'
+          KeyType: 'HASH'
+      ProvisionedThroughput:
+        ReadCapacityUnits: '5'
+        WriteCapacityUnits: '5'
+      TableName: 'visitorcount'           
 
 Outputs:
-  # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
-  # Find out more about other implicit resources you can reference within SAM
-  # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
-  HelloWorldApi:
-    Description: "API Gateway endpoint URL for Prod stage for Hello World function"
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/"
-  HelloWorldFunction:
-    Description: "Hello World Lambda Function ARN"
-    Value: !GetAtt HelloWorldFunction.Arn
-  HelloWorldFunctionIamRole:
-    Description: "Implicit IAM Role created for Hello World function"
-    Value: !GetAtt HelloWorldFunctionRole.Arn
+
+  ResumeApi:
+    Description: "API Gateway endpoint URL for Prod stage for Cloud Resume function"
+    Value: !Sub "https://${MyResumeApi}.execute-api.${AWS::Region}.amazonaws.com/prod/count"
+  ResumeFunction:
+    Description: "Cloud Resume Lambda Function ARN"
+    Value: !GetAtt ResumeFunction.Arn
+  ResumeFunctionIamRole:
+    Description: "Implicit IAM Role created for Cloud Resume function"
+    Value: !GetAtt ResumeFunctionRole.Arn
+  ResumeDBTable:
+    Description: "DynamoDB table to store the visitor count"
+    Value: !GetAtt ResumeDBTable.Arn
