@@ -14,7 +14,7 @@ jobs:
       - name: sam build
         uses: youyo/aws-sam-action/python3.8@master
         with:
-          sam_command: package --template-file ./src/template.yaml --output-template-file output.yaml ${{ secrets.S3_BUCKET }} 
+          sam_command: package --template-file ./src/template.yaml --output-template-file output.yaml --s3-bucket ${{ secrets.S3_BUCKET }} 
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
