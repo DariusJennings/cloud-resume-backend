@@ -62,13 +62,14 @@ Resources:
                   },
                   "body": json.dumps(response['Attributes']),
               }
-              
+
       Policies:
         - AWSLambdaBasicExecutionRole
         - Version: '2012-10-17'
           Statement:
           - Effect: Allow
             Action:
+              - lambda: '*'
               - lambda:InvokeFunction
               - dynamodb:BatchGetItem
               - dynamodb:GetItem
