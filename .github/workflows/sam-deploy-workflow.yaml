@@ -11,7 +11,7 @@ jobs:
     - uses: actions/checkout@v1
     - uses: falnyr/aws-sam-deploy-action@v1.0.0
       env:
-        TEMPLATE: 'template.yaml'
+        TEMPLATE: './src/template.yaml'
         AWS_STACK_NAME: cloud-resume
         AWS_REGION: 'us-east-2'
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
