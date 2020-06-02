@@ -24,6 +24,6 @@ jobs:
           deploy \
             --template-file ./src/template.yaml \
             --stack-name cloud-resume \
-            --s3-bucket ${{ S3_BUCKET }}\
+            --s3-bucket ${{ secrets.S3_BUCKET }}\
             --region us-east-2 \
             --capabilities CAPABILITY_IAM
