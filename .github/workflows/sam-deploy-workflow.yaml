@@ -31,7 +31,8 @@ jobs:
         AWS_REGION: 'us-east-2'
       run: |
         pytest './src/resume_python/lambda_test.py'
-    - name: CloudFormation Deploy Action
+    - name: SAM Deploy Action
+    - uses: actions/checkout@v1
     - uses: mgenteluci/cloudformation-deploy-action@v1.4.0
       env:
         TEMPLATE: './src/template.yaml'
