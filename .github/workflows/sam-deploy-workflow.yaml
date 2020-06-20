@@ -1,4 +1,4 @@
-name: "Deploy SAM Stack"
+name: "Deploy CloudFormation Stack"
 on: 
   push:
     branches:
@@ -9,7 +9,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
-    - name: SAM Deploy Action
     - uses: mgenteluci/cloudformation-deploy-action@v1.4.0
       env:
         TEMPLATE: './src/template.yaml'
@@ -18,4 +17,3 @@ jobs:
         AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID}}
         AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
         AWS_DEPLOY_BUCKET: ${{secrets.AWS_DEPLOY_BUCKET}}
-          
