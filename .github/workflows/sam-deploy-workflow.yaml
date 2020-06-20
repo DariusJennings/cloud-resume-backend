@@ -8,8 +8,8 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-    - name: SAM Deploy Action
     - uses: actions/checkout@v1
+    - name: SAM Deploy Action
     - uses: mgenteluci/cloudformation-deploy-action@v1.4.0
       env:
         TEMPLATE: './src/template.yaml'
