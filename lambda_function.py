@@ -12,7 +12,7 @@ class DecimalEncoder(json.JSONEncoder):
         return super(DecimalEncoder, self).default(o)
 
 def lambda_handler(event, context):
-    dynamodb = boto3.client('dynamodb')
+    dynamodb = boto3.client('dynamodb', region_name='us-east-2')
     response = dynamodb.update_item(
         TableName = 'visitorcount',
         Key={
