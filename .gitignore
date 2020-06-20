@@ -12,6 +12,9 @@
 output.yaml
 .DS_Store
 .vscode
+.github/*
+.pytest_cache/*
+.output.yaml
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
