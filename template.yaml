@@ -37,17 +37,16 @@ Resources:
               - dynamodb:GetItem
               - dynamodb:PutItem
               - dynamodb:UpdateItem
-              - logs:CreateLogGroup
             Resource: 'arn:aws:dynamodb:us-east-2:276968177400:table/visitorcount'
           - Effect: Allow
             Action:
               - logs:CreateLogStream
               - logs:PutLogEvents
-            Resource: 'arn:aws:logs:eu-east-2:276968177400:*'
+            Resource: 'arn:aws:logs:us-east-2:276968177400:*'
           - Effect: Allow
 			      Action: 
               - logs:CreateLogGroup
-			      Resource: "*"
+			      Resource: '*'
 
   ResumeDBTable:
     Type: AWS::DynamoDB::Table
