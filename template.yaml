@@ -29,7 +29,7 @@ Resources:
       Runtime: python3.7
       CodeUri: lambda_function.py
       Policies:
-        - ResumeFunctionPolicy
+        - ResumeLambdaPolicy
         - Version: '2012-10-17'
           Statement:
           - Effect: Allow
@@ -59,8 +59,8 @@ Resources:
           AttributeName: 'siteUrl'
           KeyType: 'HASH'
       ProvisionedThroughput:
-        ReadCapacityUnits: '5'
-        WriteCapacityUnits: '5'
+        ReadCapacityUnits: '1'
+        WriteCapacityUnits: '1'
       TableName: 'visitorcount'           
 
 Outputs:
