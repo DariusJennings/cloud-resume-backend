@@ -29,7 +29,7 @@ Resources:
       Runtime: python3.7
       CodeUri: lambda_function.py
       Policies:
-        - ResumeFunctionRolePolicy1
+        - ResumeFunctionPolicy
         - Version: '2012-10-17'
           Statement:
           - Effect: Allow
