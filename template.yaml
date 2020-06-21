@@ -44,10 +44,9 @@ Resources:
               - logs:PutLogEvents
             Resource: 'arn:aws:logs:us-east-2:276968177400:*'
           - Effect: Allow
-			      Action: 
+            Action:
               - logs:CreateLogGroup
-			      Resource: '*'
-
+            Resource: '*'
   ResumeDBTable:
     Type: AWS::DynamoDB::Table
     Properties:
