@@ -27,7 +27,7 @@ Resources:
     Properties:
       Handler: lambda_function.lambda_handler
       Runtime: python3.7
-      CodeUri: ./resume_python/
+      CodeUri: lambda_function.py
       Policies:
         - AWSLambdaBasicExecutionRole
         - Version: '2012-10-17'
