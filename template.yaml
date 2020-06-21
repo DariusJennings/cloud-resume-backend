@@ -10,23 +10,19 @@ Globals:
 
 Resources:
 
-  MyResumeApi:
+  ResumeApi:
     Type: AWS::Serverless::Api
     Properties:
-      Name: MyResumeApi
+      Name: ResumeApi
       StageName: prod
       Cors: "'*'"
-      DefinitionBody:
-        'Fn::Transform':
-          Name: 'AWS::Include'
-          Parameters:
-            Location: ./swagger.yaml
 
   ResumeFunction:
     Type: AWS::Serverless::Function 
     Properties:
       Handler: lambda_function.lambda_handler
       Runtime: python3.7
+      Role: arn:aws:iam::276968177400:role/ResumeLambdaRole
       CodeUri: lambda_function.py
       Policies:
         - ResumeLambdaPolicy
@@ -47,6 +43,15 @@ Resources:
             Action:
               - logs:CreateLogGroup
             Resource: '*'
+      Events: 
+        ApiEvent:
+          Type: Api
+          Properties:
+            Path: /count
+            Method: get
+            RestApiId:
+              Ref: ResumeApi
+  
   ResumeDBTable:
     Type: AWS::DynamoDB::Table
     Properties:
@@ -64,16 +69,12 @@ Resources:
       TableName: 'visitorcount'           
 
 Outputs:
-
   ResumeApi:
     Description: "API Gateway endpoint URL for Prod stage for Cloud Resume function"
-    Value: !Sub "https://${MyResumeApi}.execute-api.${AWS::Region}.amazonaws.com/prod/count"
+    Value: !Sub "https://${ResumeApi}.execute-api.${AWS::Region}.amazonaws.com/prod/count"
   ResumeFunction:
     Description: "Cloud Resume Lambda Function ARN"
     Value: !GetAtt ResumeFunction.Arn
-  ResumeFunctionIamRole:
-    Description: "Implicit IAM Role created for Cloud Resume function"
-    Value: !GetAtt ResumeFunctionRole.Arn
   ResumeDBTable:
     Description: "DynamoDB table to store the visitor count"
     Value: !GetAtt ResumeDBTable.Arn
